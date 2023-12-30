@@ -28,7 +28,7 @@ in {
     '';
     installPhase = ''
       mkdir -p $out/pages/wasm
-      wasm-bindgen $out/target/wasm32-unknown-unknown/wasm-release/vrm_viewer.wasm --out-dir $out/pages/wasm --no-typescript
+      wasm-bindgen target/wasm32-unknown-unknown/wasm-release/vrm_viewer.wasm --out-dir $out/pages/wasm --no-typescript
     '';
   });
 }
