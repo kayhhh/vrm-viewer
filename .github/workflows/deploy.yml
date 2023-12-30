@@ -30,7 +30,7 @@ jobs:
       - uses: DeterminateSystems/magic-nix-cache-action@main
       - uses: Swatinem/rust-cache@v2
       - run: nix develop -c cargo build --target wasm32-unknown-unknown --profile wasm-release
-      - run: nix develop -c wasm-bindgen --out-dir pages/wasm --no-typescript target/wasm32-unknown-unknown/wasm-release/vrm_viewer.wasm
+      - run: nix develop -c wasm-bindgen --out-dir pages/wasm --target web --no-typescript target/wasm32-unknown-unknown/wasm-release/vrm_viewer.wasm
       - run: nix develop -c wasm-opt -Oz pages/wasm/vrm_viewer_bg.wasm -o pages/wasm/vrm_viewer_bg.wasm
       - uses: actions/configure-pages@v4
       - uses: actions/upload-pages-artifact@v3
