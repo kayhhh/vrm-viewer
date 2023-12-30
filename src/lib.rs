@@ -64,7 +64,7 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>, mut vrm_asset: 
 fn set_vrm(mut vrm: Query<&mut Handle<Vrm>, With<VrmTag>>, vrm_asset: ResMut<VrmAsset>) {
     for mut handle in vrm.iter_mut() {
         if *handle != vrm_asset.0 {
-            info!("Setting new VRM: {:?}", vrm_asset.0.path());
+            info!("Loading new VRM: {:?}", vrm_asset.0.path());
             *handle = vrm_asset.0.clone();
         }
     }
@@ -82,12 +82,14 @@ fn drag_and_drop(
     mut vrm_asset: ResMut<VrmAsset>,
 ) {
     for event in events.read() {
+        info!("FileDragAndDrop: {:?}", event);
+
         if let FileDragAndDrop::DroppedFile {
             path_buf,
             window: _,
         } = event
         {
-            info!("Dropped file: {:?}", path_buf);
+            info!("DroppedFile: {:?}", path_buf);
             let path = String::from(path_buf.to_str().unwrap());
             vrm_asset.0 = asset_server.load(path);
         }
