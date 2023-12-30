@@ -7,7 +7,16 @@ use wasm_bindgen::prelude::*;
 #[wasm_bindgen(start)]
 pub fn start() {
     App::new()
-        .add_plugins((DefaultPlugins, VrmViewerPlugin))
+        .add_plugins((
+            DefaultPlugins.set(WindowPlugin {
+                primary_window: Some(Window {
+                    fit_canvas_to_parent: true,
+                    ..default()
+                }),
+                ..default()
+            }),
+            VrmViewerPlugin,
+        ))
         .run();
 }
 
