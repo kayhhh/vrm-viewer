@@ -22,9 +22,9 @@
           targets = [ "wasm32-unknown-unknown" ];
         };
 
-        build_inputs = with pkgs; [
+        build_inputs = pkgs.lib.optionals pkgs.stdenv.isLinux (with pkgs; [
           # Bevy
-          alsa-lib
+          alsa-lib.dev
           libxkbcommon
           udev
           vulkan-loader
@@ -33,7 +33,7 @@
           xorg.libXcursor
           xorg.libXi
           xorg.libXrandr
-        ];
+        ]);
 
         native_build_inputs = with pkgs; [
           cargo-auditable
