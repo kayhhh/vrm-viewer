@@ -6,9 +6,17 @@ edition = "2021"
 repository = "https://github.com/kayhhh/vrm-viewer"
 license = "GPL-3.0-or-later"
 
+[lib]
+crate-type = ["cdylib"]
+
 [profile.release]
 lto = true
 
 [profile.wasm-release]
 inherits = "release"
 opt-level = "z"
+
+[dependencies]
+bevy = "0.12.1"
+bevy_vrm = "0.0.7"
+wasm-bindgen = "0.2.89"
