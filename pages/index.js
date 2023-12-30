@@ -4,4 +4,4 @@ console.log("Initializing WASM");
 
 init().then(() => {
   console.log("WASM initialized");
-};
+});
