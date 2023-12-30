@@ -1,4 +1,4 @@
-import { start } from "./wasm/vrm_viewer.js" with { type: "javascript" };
+import { start } from "./wasm/vrm_viewer.js";
 
 console.log("running index.js");
 
