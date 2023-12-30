@@ -68,7 +68,7 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>, mut vrm_asset: 
 fn set_vrm(mut vrm: Query<&mut Handle<Vrm>, With<VrmTag>>, vrm_asset: ResMut<VrmAsset>) {
     for mut handle in vrm.iter_mut() {
         if *handle != vrm_asset.0 {
-            info!("setting new vrm: {:?}", vrm_asset.0);
+            info!("Setting new VRM: {:?}", vrm_asset.0.path());
             *handle = vrm_asset.0.clone();
         }
     }
