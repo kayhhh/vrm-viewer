@@ -4,30 +4,22 @@ use bevy::prelude::*;
 use bevy_vrm::{Vrm, VrmBundle, VrmPlugin};
 use wasm_bindgen::prelude::*;
 
-pub struct StartOptions {
-    pub assets_path: String,
-}
-
-#[wasm_bindgen]
-pub fn start_wasm(assets_path: String) {
-    let options = StartOptions { assets_path };
-    start(options);
-}
-
-/// Start the bevy app
-pub fn start(options: StartOptions) {
+#[wasm_bindgen(start)]
+pub fn start() {
     App::new()
-        .add_plugins((
-            DefaultPlugins.set(AssetPlugin {
-                file_path: options.assets_path,
-                ..default()
-            }),
-            VrmPlugin,
-        ))
-        .init_resource::<VrmAsset>()
-        .add_systems(Startup, setup)
-        .add_systems(Update, (drag_and_drop, set_vrm, rotate_vrm))
+        .add_plugins((DefaultPlugins, VrmViewerPlugin))
         .run();
+}
+
+pub struct VrmViewerPlugin;
+
+impl Plugin for VrmViewerPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_plugins(VrmPlugin)
+            .init_resource::<VrmAsset>()
+            .add_systems(Startup, setup)
+            .add_systems(Update, (drag_and_drop, set_vrm, rotate_vrm));
+    }
 }
 
 #[derive(Resource, Default)]

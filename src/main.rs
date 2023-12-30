@@ -1,7 +1,14 @@
-use vrm_viewer::StartOptions;
+use bevy::prelude::*;
+use vrm_viewer::VrmViewerPlugin;
 
 fn main() {
-    vrm_viewer::start(StartOptions {
-        assets_path: String::from("pages/assets"),
-    });
+    App::new()
+        .add_plugins((
+            DefaultPlugins.set(AssetPlugin {
+                file_path: "pages/assets".to_string(),
+                ..default()
+            }),
+            VrmViewerPlugin,
+        ))
+        .run();
 }

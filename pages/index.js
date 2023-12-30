@@ -1,5 +1,7 @@
-import { start_wasm } from "./wasm/vrm_viewer.js";
+import init from "./wasm/vrm_viewer.js";
 
-console.log("running index.js");
+console.log("Initializing WASM");
 
-start_wasm("assets");
+init().then(() => {
+  console.log("WASM initialized");
+};
