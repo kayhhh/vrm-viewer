@@ -36,6 +36,7 @@
         ]);
 
         native_build_inputs = with pkgs; [
+          binaryen
           cargo-auditable
           pkg-config
           wasm-bindgen-cli
