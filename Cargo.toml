@@ -7,7 +7,7 @@ repository = "https://github.com/kayhhh/vrm-viewer"
 license = "GPL-3.0-or-later"
 
 [lib]
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "rlib"]
 
 [profile.release]
 lto = true
