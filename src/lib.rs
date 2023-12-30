@@ -1,7 +1,7 @@
 use std::f32::consts::PI;
 
 use bevy::prelude::*;
-use bevy_vrm::{VrmBundle, VrmPlugin};
+use bevy_vrm::{Vrm, VrmBundle, VrmPlugin};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -20,31 +20,20 @@ pub fn start(options: StartOptions) {
             }),
             VrmPlugin,
         ))
+        .init_resource::<VrmAsset>()
         .add_systems(Startup, setup)
-        .add_systems(Update, (rotate_vrm, drag_and_drop))
+        .add_systems(Update, (drag_and_drop, set_vrm, rotate_vrm))
         .run();
 }
+
+#[derive(Resource, Default)]
+struct VrmAsset(pub Handle<Vrm>);
 
 #[derive(Component)]
 struct VrmTag;
 
-fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
-    let mut transform = Transform::from_xyz(0.0, -1.0, -4.0);
-    transform.rotate_y(PI);
-
-    commands.spawn((
-        VrmBundle {
-            vrm: asset_server.load("default_398.vrm"),
-            scene_bundle: SceneBundle {
-                transform,
-                ..default()
-            },
-        },
-        VrmTag,
-    ));
-
+fn setup(mut commands: Commands, asset_server: Res<AssetServer>, mut vrm_asset: ResMut<VrmAsset>) {
     commands.spawn((Camera3dBundle::default(), bevy_vrm::mtoon::MtoonMainCamera));
-
     commands.spawn((
         DirectionalLightBundle {
             directional_light: DirectionalLight {
@@ -57,6 +46,32 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
         },
         bevy_vrm::mtoon::MtoonSun,
     ));
+
+    let mut transform = Transform::from_xyz(0.0, -1.0, -4.0);
+    transform.rotate_y(PI);
+
+    let vrm = asset_server.load("default_398.vrm");
+    vrm_asset.0 = vrm.clone();
+
+    commands.spawn((
+        VrmTag,
+        VrmBundle {
+            vrm,
+            scene_bundle: SceneBundle {
+                transform,
+                ..default()
+            },
+        },
+    ));
+}
+
+fn set_vrm(mut vrm: Query<&mut Handle<Vrm>, With<VrmTag>>, vrm_asset: ResMut<VrmAsset>) {
+    for mut handle in vrm.iter_mut() {
+        if *handle != vrm_asset.0 {
+            info!("setting new vrm: {:?}", vrm_asset.0);
+            *handle = vrm_asset.0.clone();
+        }
+    }
 }
 
 fn rotate_vrm(time: Res<Time>, mut query: Query<&mut Transform, With<VrmTag>>) {
@@ -65,8 +80,20 @@ fn rotate_vrm(time: Res<Time>, mut query: Query<&mut Transform, With<VrmTag>>) {
     }
 }
 
-fn drag_and_drop(mut events: EventReader<FileDragAndDrop>) {
+fn drag_and_drop(
+    mut events: EventReader<FileDragAndDrop>,
+    asset_server: Res<AssetServer>,
+    mut vrm_asset: ResMut<VrmAsset>,
+) {
     for event in events.read() {
-        info!("{:?}", event);
+        if let FileDragAndDrop::DroppedFile {
+            path_buf,
+            window: _,
+        } = event
+        {
+            info!("Dropped file: {:?}", path_buf);
+            let path = String::from(path_buf.to_str().unwrap());
+            vrm_asset.0 = asset_server.load(path);
+        }
     }
 }
