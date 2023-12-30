@@ -23,7 +23,12 @@ let
 in {
   wasm = rustPlatform.buildRustPackage (common // {
     pname = "vrm-viewer";
-    installPhase =
-      "wasm-bindgen target/wasm32-unknown-unknown/release/vrm_viewer.wasm --out-dir pages --no-typescript";
+    buildPhase = ''
+      cargo build --target wasm32-unknown-unknown --profile wasm-release
+    '';
+    installPhase = ''
+      mkdir -p $out/pages/wasm
+      wasm-bindgen $out/target/wasm32-unknown-unknown/wasm-release/vrm_viewer.wasm --out-dir $out/pages/wasm --no-typescript
+    '';
   });
 }
