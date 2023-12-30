@@ -1,1 +1,5 @@
-console.log('index.js');
+import { start } from "./wasm/vrm-viewer.js";
+
+console.log("running index.js");
+
+start();
