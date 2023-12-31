@@ -10,6 +10,7 @@ async function run() {
 
   canvas.addEventListener("drop", (e) => {
     e.preventDefault();
+    e.stopPropagation();
   });
 }
 
