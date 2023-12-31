@@ -17,6 +17,7 @@ pub fn start() {
             }),
             VrmViewerPlugin,
         ))
+        .insert_resource(ClearColor(Color::rgb(0.1, 0.1, 0.1)))
         .run();
 }
 
