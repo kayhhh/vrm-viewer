@@ -6,14 +6,8 @@ edition = "2021"
 repository = "https://github.com/kayhhh/vrm-viewer"
 license = "GPL-3.0-or-later"
 
-[lib]
-crate-type = ["cdylib", "rlib"]
-
 [profile.release]
 lto = true
-
-[profile.wasm-release]
-inherits = "release"
 codegen-units = 1
 opt-level = "z"
 

@@ -40,6 +40,7 @@
           cargo-auditable
           nodePackages.prettier
           pkg-config
+          trunk
           wasm-bindgen-cli
         ];
 
@@ -50,7 +51,7 @@
         packages = code // {
           all = pkgs.symlinkJoin {
             name = "all";
-            paths = with code; [ wasm ];
+            paths = with code; [ native wasm ];
           };
 
           default = packages.all;

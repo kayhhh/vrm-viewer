@@ -2,24 +2,6 @@ use std::f32::consts::PI;
 
 use bevy::prelude::*;
 use bevy_vrm::{Vrm, VrmBundle, VrmPlugin};
-use wasm_bindgen::prelude::*;
-
-#[wasm_bindgen(start)]
-pub fn start() {
-    App::new()
-        .add_plugins((
-            DefaultPlugins.set(WindowPlugin {
-                primary_window: Some(Window {
-                    fit_canvas_to_parent: true,
-                    ..default()
-                }),
-                ..default()
-            }),
-            VrmViewerPlugin,
-        ))
-        .insert_resource(ClearColor(Color::rgb(0.1, 0.1, 0.1)))
-        .run();
-}
 
 pub struct VrmViewerPlugin;
 

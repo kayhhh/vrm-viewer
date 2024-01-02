@@ -21,15 +21,13 @@ let
     LD_LIBRARY_PATH = lib.makeLibraryPath build_inputs;
   };
 in {
+  native = rustPlatform.buildRustPackage (common // { pname = "vrm-viewer"; });
   wasm = rustPlatform.buildRustPackage (common // {
     pname = "vrm-viewer";
-    buildPhase = ''
-      cargo build --target wasm32-unknown-unknown --profile wasm-release
-    '';
+    buildPhase = "trunk build --release";
     installPhase = ''
-      mkdir -p $out/pages/wasm
-      wasm-bindgen --out-dir $out/pages/wasm --target web --no-typescript target/wasm32-unknown-unknown/wasm-release/vrm_viewer.wasm 
-      wasm-opt -Oz $out/pages/wasm/vrm_viewer_bg.wasm -o $out/pages/wasm/vrm_viewer_bg.wasm
+      mkdir -p $out
+      cp -r ./dist/* $out
     '';
   });
 }
