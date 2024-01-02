@@ -21,13 +21,21 @@ let
     LD_LIBRARY_PATH = lib.makeLibraryPath build_inputs;
   };
 in {
-  native = rustPlatform.buildRustPackage (common // { pname = "vrm-viewer"; });
-  wasm = rustPlatform.buildRustPackage (common // {
+  bin = rustPlatform.buildRustPackage (common // {
+    pname = "vrm-viewer";
+    postInstall = ''
+      cp -r ./assets $out/bin
+    '';
+  });
+  web = rustPlatform.buildRustPackage (common // {
     pname = "vrm-viewer";
     buildPhase = "trunk build --release";
     installPhase = ''
-      mkdir -p $out
-      cp -r ./dist/* $out
+      mkdir -p $out/web
+      cp -r ./dist/* $out/web
+    '';
+    postInstall = ''
+      cp -r ./assets $out/bin
     '';
   });
 }

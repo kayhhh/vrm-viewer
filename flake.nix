@@ -51,7 +51,17 @@
         packages = code // {
           all = pkgs.symlinkJoin {
             name = "all";
-            paths = with code; [ native wasm ];
+            paths = with code; [ bin web ];
+          };
+
+          bin = pkgs.symlinkJoin {
+            name = "bin";
+            paths = code.bin;
+          };
+
+          web = pkgs.symlinkJoin {
+            name = "web";
+            paths = code.web;
           };
 
           default = packages.all;
