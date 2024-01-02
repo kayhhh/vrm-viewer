@@ -29,10 +29,10 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
       - uses: Swatinem/rust-cache@v2
-      - run: nix develop -c trunk build --release
+      - run: nix build .#web
       - uses: actions/configure-pages@v4
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: "dist"
+          path: "result/web"
       - id: deployment
         uses: actions/deploy-pages@v4
