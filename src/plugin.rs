@@ -8,19 +8,12 @@ pub struct VrmViewerPlugin;
 impl Plugin for VrmViewerPlugin {
     fn build(&self, app: &mut App) {
         app.add_plugins(VrmPlugin)
-            .init_resource::<VrmAsset>()
             .add_systems(Startup, setup)
-            .add_systems(Update, (drag_and_drop, set_vrm, rotate_vrm));
+            .add_systems(Update, (read_dropped_files, rotate_vrm));
     }
 }
 
-#[derive(Resource, Default)]
-pub struct VrmAsset(pub Handle<Vrm>);
-
-#[derive(Component)]
-struct VrmTag;
-
-fn setup(mut commands: Commands, asset_server: Res<AssetServer>, mut vrm_asset: ResMut<VrmAsset>) {
+fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn((Camera3dBundle::default(), bevy_vrm::mtoon::MtoonMainCamera));
     commands.spawn((
         DirectionalLightBundle {
@@ -39,52 +32,34 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>, mut vrm_asset: 
     transform.rotate_y(PI);
 
     let vrm = asset_server.load("default_398.vrm");
-    vrm_asset.0 = vrm.clone();
 
-    commands.spawn((
-        VrmTag,
-        VrmBundle {
-            vrm,
-            scene_bundle: SceneBundle {
-                transform,
-                ..default()
-            },
+    commands.spawn(VrmBundle {
+        vrm,
+        scene_bundle: SceneBundle {
+            transform,
+            ..default()
         },
-    ));
+    });
 }
 
-fn set_vrm(mut vrm: Query<&mut Handle<Vrm>, With<VrmTag>>, vrm_asset: ResMut<VrmAsset>) {
-    for mut handle in vrm.iter_mut() {
-        if *handle != vrm_asset.0 {
-            info!("Loading new VRM: {:?}", vrm_asset.0.path());
-            *handle = vrm_asset.0.clone();
-        }
-    }
-}
-
-fn rotate_vrm(time: Res<Time>, mut query: Query<&mut Transform, With<VrmTag>>) {
-    for mut transform in query.iter_mut() {
-        transform.rotate(Quat::from_rotation_y(time.delta_seconds() / 3.0));
-    }
-}
-
-fn drag_and_drop(
+fn read_dropped_files(
     mut events: EventReader<FileDragAndDrop>,
     asset_server: Res<AssetServer>,
-    mut vrm_asset: ResMut<VrmAsset>,
+    mut vrms: Query<&mut Handle<Vrm>>,
 ) {
     for event in events.read() {
-        info!("FileDragAndDrop: {:?}", event);
-
-        if let FileDragAndDrop::DroppedFile {
-            path_buf,
-            window: _,
-        } = event
-        {
+        if let FileDragAndDrop::DroppedFile { path_buf, .. } = event {
             let path = String::from(path_buf.to_str().unwrap());
             info!("DroppedFile: {:?}", path);
 
-            vrm_asset.0 = asset_server.load(path);
+            let mut vrm = vrms.single_mut();
+            *vrm = asset_server.load(path);
         }
+    }
+}
+
+fn rotate_vrm(time: Res<Time>, mut query: Query<&mut Transform, With<Handle<Vrm>>>) {
+    for mut transform in query.iter_mut() {
+        transform.rotate(Quat::from_rotation_y(time.delta_seconds() / 3.0));
     }
 }
