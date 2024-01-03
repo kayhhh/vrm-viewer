@@ -18,4 +18,4 @@ bevy_vrm = "0.0.7"
 [target.'cfg(target_family = "wasm")'.dependencies]
 wasm-bindgen = "0.2.89"
 bevy_blob_loader = "0.0.3"
-bevy_web_file_drop = "0.0.1"
+bevy_web_file_drop = "0.0.2"
