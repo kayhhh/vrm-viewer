@@ -1065,6 +1065,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "bevy_web_file_drop"
+version = "0.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "845f123de20a9409f167105aa067d6485197ba9774dd4a3fab5e8ac054035636"
+dependencies = [
+ "bevy",
+ "bevy_blob_loader",
+ "js-sys",
+ "wasm-bindgen",
+]
+
+[[package]]
 name = "bevy_window"
 version = "0.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3360,6 +3372,7 @@ dependencies = [
  "bevy",
  "bevy_blob_loader",
  "bevy_vrm",
+ "bevy_web_file_drop",
  "wasm-bindgen",
 ]
 

@@ -81,8 +81,9 @@ fn drag_and_drop(
             window: _,
         } = event
         {
-            info!("DroppedFile: {:?}", path_buf);
             let path = String::from(path_buf.to_str().unwrap());
+            info!("DroppedFile: {:?}", path);
+
             vrm_asset.0 = asset_server.load(path);
         }
     }
