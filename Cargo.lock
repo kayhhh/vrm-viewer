@@ -449,6 +449,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "bevy_blob_loader"
+version = "0.0.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bf674bed0c06e3f77459283826ea03da7a885b6033c6a20c1870636eb228f017"
+dependencies = [
+ "base64 0.21.5",
+ "bevy",
+ "js-sys",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
+]
+
+[[package]]
 name = "bevy_core"
 version = "0.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3344,6 +3358,7 @@ name = "vrm-viewer"
 version = "0.0.0"
 dependencies = [
  "bevy",
+ "bevy_blob_loader",
  "bevy_vrm",
  "wasm-bindgen",
 ]

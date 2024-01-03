@@ -15,7 +15,7 @@ impl Plugin for VrmViewerPlugin {
 }
 
 #[derive(Resource, Default)]
-struct VrmAsset(pub Handle<Vrm>);
+pub struct VrmAsset(pub Handle<Vrm>);
 
 #[derive(Component)]
 struct VrmTag;
