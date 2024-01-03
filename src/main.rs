@@ -1,4 +1,6 @@
-use bevy::{asset::AssetMetaCheck, prelude::*};
+use bevy::prelude::*;
+
+#[cfg(target_family = "wasm")]
 use wasm_bindgen::prelude::*;
 
 mod plugin;
@@ -9,8 +11,10 @@ fn main() {
         .run();
 }
 
+#[cfg(target_family = "wasm")]
 #[wasm_bindgen(start)]
 fn start() {
+    use bevy::asset::AssetMetaCheck;
     use bevy_web_file_drop::WebFileDropPlugin;
 
     App::new()
