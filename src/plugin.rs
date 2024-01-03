@@ -1,6 +1,6 @@
 use std::f32::consts::PI;
 
-use bevy::prelude::*;
+use bevy::{asset::AssetPath, prelude::*};
 use bevy_vrm::{Vrm, VrmBundle, VrmPlugin};
 
 pub struct VrmViewerPlugin;
@@ -49,8 +49,8 @@ fn read_dropped_files(
 ) {
     for event in events.read() {
         if let FileDragAndDrop::DroppedFile { path_buf, .. } = event {
-            let path = String::from(path_buf.to_str().unwrap());
-            info!("DroppedFile: {:?}", path);
+            let path = AssetPath::from_path(path_buf.as_path());
+            info!("DroppedFile: {}", path);
 
             let mut vrm = vrms.single_mut();
             *vrm = asset_server.load(path);
