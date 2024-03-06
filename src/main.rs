@@ -20,16 +20,6 @@ fn start() {
     App::new()
         .insert_resource(AssetMetaCheck::Never)
         .insert_resource(ClearColor(Color::rgb(0.1, 0.1, 0.1)))
-        .add_plugins((
-            WebFileDropPlugin,
-            DefaultPlugins.set(WindowPlugin {
-                primary_window: Some(Window {
-                    fit_canvas_to_parent: true,
-                    ..default()
-                }),
-                ..default()
-            }),
-            plugin::VrmViewerPlugin,
-        ))
+        .add_plugins((WebFileDropPlugin, DefaultPlugins, plugin::VrmViewerPlugin))
         .run();
 }
