@@ -23,7 +23,6 @@
         };
 
         build_inputs = pkgs.lib.optionals pkgs.stdenv.isLinux (with pkgs; [
-          # Bevy
           alsa-lib.dev
           libxkbcommon
           udev
