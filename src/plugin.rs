@@ -1,44 +1,54 @@
 use std::f32::consts::PI;
 
 use bevy::prelude::*;
-use bevy_vrm::{Vrm, VrmBundle, VrmPlugin};
+use bevy_panorbit_camera::{PanOrbitCamera, PanOrbitCameraPlugin};
+use bevy_vrm::{mtoon::MtoonSun, Vrm, VrmBundle, VrmPlugin};
 
 pub struct VrmViewerPlugin;
 
 impl Plugin for VrmViewerPlugin {
     fn build(&self, app: &mut App) {
-        app.add_plugins(VrmPlugin)
+        app.add_plugins((PanOrbitCameraPlugin, VrmPlugin))
             .add_systems(Startup, setup)
-            .add_systems(Update, (read_dropped_files, rotate_vrm));
+            .add_systems(Update, read_dropped_files);
     }
 }
 
 fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
-    commands.spawn((Camera3dBundle::default(), bevy_vrm::mtoon::MtoonMainCamera));
+    commands.spawn((
+        Camera3dBundle {
+            transform: Transform::from_xyz(1.0, 2.0, 5.0),
+            ..default()
+        },
+        PanOrbitCamera {
+            focus: Vec3::new(0.0, 0.8, 0.0),
+            ..default()
+        },
+        bevy_vrm::mtoon::MtoonMainCamera,
+    ));
+
     commands.spawn((
         DirectionalLightBundle {
             directional_light: DirectionalLight {
                 shadows_enabled: true,
-                illuminance: 10_000.0,
+                illuminance: 1000.0,
                 ..default()
             },
-            transform: Transform::from_xyz(0.0, 5.0, -5.0),
+            transform: Transform::from_xyz(2.0, 4.0, -5.0),
             ..default()
         },
-        bevy_vrm::mtoon::MtoonSun,
+        MtoonSun,
     ));
 
-    let mut transform = Transform::from_xyz(0.0, -1.0, -4.0);
+    let mut transform = Transform::default();
     transform.rotate_y(PI);
 
-    let vrm = asset_server.load("default_398.vrm");
-
     commands.spawn(VrmBundle {
-        vrm,
         scene_bundle: SceneBundle {
             transform,
             ..default()
         },
+        vrm: asset_server.load("default_398.vrm"),
     });
 }
 
@@ -59,11 +69,5 @@ fn read_dropped_files(
             let mut vrm = vrms.single_mut();
             *vrm = asset_server.load(path);
         }
-    }
-}
-
-fn rotate_vrm(time: Res<Time>, mut query: Query<&mut Transform, With<Handle<Vrm>>>) {
-    for mut transform in query.iter_mut() {
-        transform.rotate(Quat::from_rotation_y(time.delta_seconds() / 3.0));
     }
 }
