@@ -71,12 +71,13 @@ fn update_ui(mut contexts: EguiContexts) {
 
             ui.label("Drop a .vrm file into the window to load it.");
 
-            ui.horizontal(|ui| {
-                ui.spacing_mut().item_spacing.x = 0.0;
+            ui.separator();
 
-                ui.label("Made by ");
-                ui.hyperlink_to("kayh", "https://kayh.dev");
-                ui.label(".");
+            ui.vertical_centered(|ui| {
+                ui.horizontal(|ui| {
+                    ui.hyperlink_to("[github]", "https://github.com/kayhhh/vrm-viewer");
+                    ui.hyperlink_to("[kayh.dev]", "https://kayh.dev");
+                });
             });
         });
     });
