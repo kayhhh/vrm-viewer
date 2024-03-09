@@ -58,17 +58,23 @@ fn update_ui(mut contexts: EguiContexts) {
     bevy_egui::egui::Window::new("VRM Viewer").show(contexts.ctx_mut(), |ui| {
         ui.vertical(|ui| {
             ui.horizontal(|ui| {
-                ui.label("Loads VRM avatars using");
+                ui.spacing_mut().item_spacing.x = 0.0;
+
+                ui.label("Loads ");
+                ui.hyperlink_to("VRM", "https://vrm.dev/en");
+                ui.label(" avatars using ");
                 ui.hyperlink_to("bevy_vrm", "https://github.com/unavi-xyz/bevy_vrm");
-                ui.label(", a plugin for the");
+                ui.label(", a plugin for the ");
                 ui.hyperlink_to("Bevy", "https://bevyengine.org");
-                ui.label("game engine.");
+                ui.label(" game engine.");
             });
 
             ui.label("Drop a .vrm file into the window to load it.");
 
             ui.horizontal(|ui| {
-                ui.label("Made by");
+                ui.spacing_mut().item_spacing.x = 0.0;
+
+                ui.label("Made by ");
                 ui.hyperlink_to("kayh", "https://kayh.dev")
             });
         });
