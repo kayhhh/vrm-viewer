@@ -75,7 +75,8 @@ fn update_ui(mut contexts: EguiContexts) {
                 ui.spacing_mut().item_spacing.x = 0.0;
 
                 ui.label("Made by ");
-                ui.hyperlink_to("kayh", "https://kayh.dev")
+                ui.hyperlink_to("kayh", "https://kayh.dev");
+                ui.label(".");
             });
         });
     });
