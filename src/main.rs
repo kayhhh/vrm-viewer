@@ -21,7 +21,6 @@ fn start() {
 
     App::new()
         .insert_resource(AssetMetaCheck::Never)
-        .insert_resource(ClearColor(Color::rgb(0.1, 0.1, 0.1)))
         .add_plugins((WebFileDropPlugin, DefaultPlugins, VrmViewerPlugin))
         .run();
 }

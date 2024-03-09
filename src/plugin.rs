@@ -1,6 +1,7 @@
 use std::f32::consts::PI;
 
 use bevy::prelude::*;
+use bevy_egui::{EguiContexts, EguiPlugin};
 use bevy_panorbit_camera::{PanOrbitCamera, PanOrbitCameraPlugin};
 use bevy_vrm::{mtoon::MtoonSun, Vrm, VrmBundle, VrmPlugin};
 
@@ -8,9 +9,10 @@ pub struct VrmViewerPlugin;
 
 impl Plugin for VrmViewerPlugin {
     fn build(&self, app: &mut App) {
-        app.add_plugins((PanOrbitCameraPlugin, VrmPlugin))
+        app.insert_resource(ClearColor(Color::rgb(0.1, 0.1, 0.1)))
+            .add_plugins((EguiPlugin, PanOrbitCameraPlugin, VrmPlugin))
             .add_systems(Startup, setup)
-            .add_systems(Update, read_dropped_files);
+            .add_systems(Update, (update_ui, read_dropped_files));
     }
 }
 
@@ -49,6 +51,27 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
             ..default()
         },
         vrm: asset_server.load("default_398.vrm"),
+    });
+}
+
+fn update_ui(mut contexts: EguiContexts) {
+    bevy_egui::egui::Window::new("VRM Viewer").show(contexts.ctx_mut(), |ui| {
+        ui.vertical(|ui| {
+            ui.horizontal(|ui| {
+                ui.label("Loads VRM avatars using");
+                ui.hyperlink_to("bevy_vrm", "https://github.com/unavi-xyz/bevy_vrm");
+                ui.label(", a plugin for the");
+                ui.hyperlink_to("Bevy", "https://bevyengine.org");
+                ui.label("game engine.");
+            });
+
+            ui.label("Drop a .vrm file into the window to load it.");
+
+            ui.horizontal(|ui| {
+                ui.label("Made by");
+                ui.hyperlink_to("kayh", "https://kayh.dev")
+            });
+        });
     });
 }
 
