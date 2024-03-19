@@ -1,8 +1,9 @@
 use bevy::prelude::*;
+use vrm_viewer::VrmViewerPlugin;
 
 fn main() {
     App::new()
-        .add_plugins((DefaultPlugins, vrm_viewer::VrmViewerPlugin))
+        .add_plugins((DefaultPlugins, VrmViewerPlugin))
         .run();
 }
 
