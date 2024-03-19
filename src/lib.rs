@@ -31,11 +31,11 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn((
         DirectionalLightBundle {
             directional_light: DirectionalLight {
+                illuminance: 10_000.0,
                 shadows_enabled: true,
-                illuminance: 1000.0,
                 ..default()
             },
-            transform: Transform::from_xyz(2.0, 4.0, -5.0),
+            transform: Transform::from_rotation(Quat::from_rotation_x(-PI / 3.0)),
             ..default()
         },
         MtoonSun,
