@@ -21,3 +21,6 @@ wasm-bindgen = "=0.2.91"
 lto = true
 codegen-units = 1
 opt-level = "z"
+
+[patch.crates-io]
+bevy = { git = "https://github.com/eero-lehtinen/bevy", branch = "v0.13.1-nvidia-fix" }
