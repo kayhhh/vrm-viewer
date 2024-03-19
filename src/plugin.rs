@@ -3,7 +3,7 @@ use std::f32::consts::PI;
 use bevy::prelude::*;
 use bevy_egui::{EguiContexts, EguiPlugin};
 use bevy_panorbit_camera::{PanOrbitCamera, PanOrbitCameraPlugin};
-use bevy_vrm::{mtoon::MtoonSun, Vrm, VrmBundle, VrmPlugin};
+use bevy_vrm::{loader::Vrm, mtoon::MtoonSun, VrmBundle, VrmPlugin};
 
 pub struct VrmViewerPlugin;
 
@@ -26,7 +26,6 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
             focus: Vec3::new(0.0, 0.8, 0.0),
             ..default()
         },
-        bevy_vrm::mtoon::MtoonMainCamera,
     ));
 
     commands.spawn((
@@ -51,6 +50,7 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
             ..default()
         },
         vrm: asset_server.load("default_398.vrm"),
+        ..default()
     });
 }
 
