@@ -9,7 +9,7 @@ license = "GPL-3.0-or-later"
 [dependencies]
 bevy = "0.13.0"
 bevy_egui = "0.25.0"
-bevy_panorbit_camera = { version = "0.16.1", features = ["bevy_egui"] }
+bevy_panorbit_camera = { version = "0.17.0", features = ["bevy_egui"] }
 bevy_vrm = "0.0.9"
 
 [target.'cfg(target_family = "wasm")'.dependencies]
